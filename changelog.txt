@@ -1,7 +1,4 @@
-Plugin Name: Payhubix Crypto Payment Gateway
-Version: 1.0.0
-Author: Payhubix Team
--------------------
+*** WooCommerce Payhubix Crypto Payment Gateway***
 
-= 1.0.0 =
-* Initial release.
+2024-12-02 - version 1.0.0
+* Added - Initial release.
