@@ -1,0 +1,7 @@
+Plugin Name: Payhubix Crypto Payment Gateway
+Version: 1.0.0
+Author: Payhubix Team
+-------------------
+
+= 1.0.0 =
+* Initial release.
