@@ -8,7 +8,7 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 	public function __construct()
 	{
 		$this->id = 'payhubix_gateway';
-		$this->method_title = __('Payhubix Gateway', 'payhubix-gateway');
+		$this->method_title = __('Payhubix Gateway', 'payhubix-gateway-wc');
 		$this->has_fields = false;
 		$this->icon = WP_PLUGIN_URL . '/' . plugin_basename(__DIR__) . '/assets/logo.png';
 		$this->method_description = 
@@ -33,39 +33,39 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 	{
 		$this->form_fields = array(
 			'enabled' => array(
-				'title' => __('Enable/Disable', 'payhubix-gateway'),
+				'title' => __('Enable/Disable', 'payhubix-gateway-wc'),
 				'type' => 'checkbox',
-				'label' => __('Enable Payhubix Payment Gateway', 'payhubix-gateway'),
+				'label' => __('Enable Payhubix Payment Gateway', 'payhubix-gateway-wc'),
 				'default' => 'yes',
 			),
 			'title' => array(
-				'title' => __('Title', 'payhubix-gateway'),
+				'title' => __('Title', 'payhubix-gateway-wc'),
 				'type' => 'text',
-				'description' => __('Title of the payment method visible to the customer during checkout.', 'payhubix-gateway'),
-				'default' => __('Pay with Payhubix', 'payhubix-gateway'),
+				'description' => __('Title of the payment method visible to the customer during checkout.', 'payhubix-gateway-wc'),
+				'default' => __('Pay with Payhubix', 'payhubix-gateway-wc'),
 			),
 			'description' => array(
-				'title' => __('Description', 'payhubix-gateway'),
+				'title' => __('Description', 'payhubix-gateway-wc'),
 				'type' => 'textarea',
-				'description' => __('Description of the payment method visible to the customer.', 'payhubix-gateway'),
-				'default' => __('Use Payhubix to securely pay for your order.', 'payhubix-gateway'),
+				'description' => __('Description of the payment method visible to the customer.', 'payhubix-gateway-wc'),
+				'default' => __('Use Payhubix to securely pay for your order.', 'payhubix-gateway-wc'),
 			),
 			'api_key' => array(
-				'title' => __('API Key', 'payhubix-gateway'),
+				'title' => __('API Key', 'payhubix-gateway-wc'),
 				'type' => 'textarea',
-				'description' => __('Enter your Payhubix API key.', 'payhubix-gateway'),
+				'description' => __('Enter your Payhubix API key.', 'payhubix-gateway-wc'),
 				'default' => '',
 			),
 			'shop_id' => array(
-				'title' => __('Shop ID', 'payhubix-gateway'),
+				'title' => __('Shop ID', 'payhubix-gateway-wc'),
 				'type' => 'text',
-				'description' => __('Enter your Shop ID', 'payhubix-gateway'),
+				'description' => __('Enter your Shop ID', 'payhubix-gateway-wc'),
 				'default' => '',
 			),
 			'time_for_payment' => array(
-				'title' => __('Time For Payment', 'payhubix-gateway'),
+				'title' => __('Time For Payment', 'payhubix-gateway-wc'),
 				'type' => 'select',
-				'description' => __('The time allowed for payment.', 'payhubix-gateway'),
+				'description' => __('The time allowed for payment.', 'payhubix-gateway-wc'),
 				'default' => '02:00',
 				'options' => array(
 					'00:15' => '15 minutes',
@@ -108,7 +108,8 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 	public function handle_payhubix_callback()
 	{
 		if(isset($_GET['key'])){
-			$req_order_id = wc_get_order_id_by_order_key($_GET['key']);
+			$key = sanitize_text_field(wp_unslash($_GET['key']));
+			$req_order_id = wc_get_order_id_by_order_key($key);
 			$order = wc_get_order($req_order_id);
 			$invoice_id = $order->get_meta('_payhubix_invoice_id');
 			$data = $this->check_payment_status($invoice_id);
@@ -117,19 +118,16 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 				$invoice_data = $data['message'];
 
 				if ($invoice_id != $invoice_data['link']){
-					error_log('Payhubix callback: Invoice ID mismatch for order ' . $req_order_id);
-					wc_add_notice(__('Error processing payment, please contact support.'), 'error');
+					wc_add_notice(__('Error processing payment, please contact support.', 'payhubix-gateway-wc'), 'error');
 					wp_redirect(wc_get_checkout_url());
 					exit;
 				}
 
 				// Extract necessary info from the callback
-				$order_id = $invoice_data['order_id'];
 				$status = $invoice_data['status'];
 	
 				// Check if the order exists
 				if (!$order) {
-					error_log(__('Payhubix callback: Order not found for ID ') . $order_id);
 					wp_redirect(wc_get_checkout_url());
 					return;
 				}
@@ -140,42 +138,42 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 						$order->payment_complete();
 						$order->add_order_note('Payment successfully processed by Payhubix.');
 						$order->update_status('completed');
-						wc_add_notice(__('Your payment has been successfully processed. Thank you for your order!'), 'success');
+						wc_add_notice(__('Your payment has been successfully processed. Thank you for your order!', 'payhubix-gateway-wc'), 'success');
 						break;
 	
 					case 'Canceled':
 						// Payment was canceled
 						$order->update_status('cancelled');
 						$order->add_order_note('Payment was canceled by the customer or Payhubix.');
-						wc_add_notice(__('Your payment has been canceled. Please contact support if this is an error.'), 'error');
+						wc_add_notice(__('Your payment has been canceled. Please contact support if this is an error.', 'payhubix-gateway-wc'), 'error');
 						break;
 	
 					case 'PartiallyExpired':
 						// Payment is partially expired (payment was not completed in time)
 						$order->update_status('on-hold');
 						$order->add_order_note('Payment was partially expired, payment not fully processed.');
-						wc_add_notice(__('Your payment is partially expired. Please contact support for assistance.'), 'error');
+						wc_add_notice(__('Your payment is partially expired. Please contact support for assistance.', 'payhubix-gateway-wc'), 'error');
 						break;
 	
 					case 'Expired':
 						// Payment expired
 						$order->update_status('cancelled');
 						$order->add_order_note('Payment expired, payment not completed in time.');
-						wc_add_notice(__('Your payment has expired. Please pay or place a new order.'), 'error');
+						wc_add_notice(__('Your payment has expired. Please pay or place a new order.', 'payhubix-gateway-wc'), 'error');
 						break;
 						
 					case 'Created':
 						// Payment created
 						$order->update_status('pending-payment');
 						$order->add_order_note('Payment created, payment not completed in time.');
-						wc_add_notice(__('Your payment has created. Please place a new order.'), 'error');
+						wc_add_notice(__('Your payment has created. Please place a new order.', 'payhubix-gateway-wc'), 'error');
 						break;
 	
 					default:
 						// If there is an unknown status
 						$order->update_status('failed');
 						$order->add_order_note('Payment status unknown: ' . $status);
-						wc_add_notice(__('There was an issue processing your payment. Please contact support.'), 'error');
+						wc_add_notice(__('There was an issue processing your payment. Please contact support.', 'payhubix-gateway-wc'), 'error');
 						break;
 				}
 				
@@ -185,13 +183,11 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 				exit;
 			} else {
 				// Handle any errors in the callback data
-				error_log('Payhubix callback error: ' . json_encode($data));
 				wp_redirect(wc_get_checkout_url());
 				wp_send_json_error();
 				exit;
 			}
 		} else {
-			error_log('Order not found!');
 			wp_redirect(wc_get_checkout_url());
 			wp_send_json_error();
 			exit;
@@ -240,7 +236,7 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 	
 		// Set up the arguments for the request
 		$args = [
-			'body'        => json_encode($data),
+			'body'        => wp_json_encode($data),
 			'headers'     => [
 				'Content-Type' => 'application/json',
 				'X-Api-key'    => $this->api_key,

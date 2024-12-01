@@ -1,0 +1,7 @@
+*** Payhubix Gateway For Woocommerce ***
+
+2024-12-01 - version 1.1.0
+* Bug fixes and performance improvements
+
+2024-11-29 - version 1.0.0
+* Added - Initial release.
