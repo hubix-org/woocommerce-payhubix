@@ -28,7 +28,7 @@ final class Payhubix_Gateway_Blocks extends AbstractPaymentMethodType {
                 'wp-html-entities',
                 'wp-i18n',
             ],
-            '1.1.0',
+            '1.1.1',
             true
         );
         if( function_exists( 'wp_set_script_translations' ) ) {            

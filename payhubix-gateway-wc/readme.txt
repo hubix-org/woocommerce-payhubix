@@ -36,6 +36,9 @@ The Payhubix Gateway for WooCommerce is a powerful payment integration plugin th
 
 
 
+= 1.1.1 =
+* Add /languages (Portable Object Template)
+
 = 1.1.0 =
 Bug fixes and performance improvements
 

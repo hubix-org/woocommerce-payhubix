@@ -1,5 +1,8 @@
 *** Payhubix Gateway For Woocommerce ***
 
+2024-12-02 - version 1.1.1
+* Add /languages (Portable Object Template)
+
 2024-12-01 - version 1.1.0
 * Bug fixes and performance improvements
 
