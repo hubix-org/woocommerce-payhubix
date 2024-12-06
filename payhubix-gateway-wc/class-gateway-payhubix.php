@@ -224,7 +224,7 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 		
 		// Prepare the data to be sent in JSON format
 		$data = [
-			'currency_amount'   => (int) $order->get_total(),
+			'currency_amount'   => (float) $order->get_total(),
 			'currency_symbol'   => get_woocommerce_currency(),
 			'customer_email'    => $order->get_billing_email(),
 			'time_for_payment'   => $this->time_for_payment,

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Payhubix Gateway For Woocommerce
 Description: A WooCommerce payment gateway that allows users to pay via Payhubix API.
-Version: 1.1.1
+Version: 1.1.2
 Plugin URI:  https://payhubix.com
 Author: Payhubix TM, Mohammad Bina
 Author URI: https://payhubix.com

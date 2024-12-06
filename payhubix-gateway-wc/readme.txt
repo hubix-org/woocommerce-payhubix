@@ -34,7 +34,9 @@ The Payhubix Gateway for WooCommerce is a powerful payment integration plugin th
 
 == Change log ==
 
-
+= 1.1.2 =
+* Fix Price with Decimals
+* Add ReadMe
 
 = 1.1.1 =
 * Add /languages (Portable Object Template)
