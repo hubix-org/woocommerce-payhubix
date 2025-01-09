@@ -196,7 +196,7 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 
 	private function check_payment_status($invoice_id)
 	{
-		$url = 'https://api.payhubix.com/v1/payment/invoices/' . $invoice_id;
+		$url = 'https://api.payhubix.com/v1/invoices/' . $invoice_id;
 
 		$args = [
 			'headers' => [
@@ -220,7 +220,7 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 	
 	private function call_payhubix_api( $order ) {
 		// Set the API endpoint URL
-		$url = 'https://api.payhubix.com/v1/payment/shops/' . $this->shop_id . '/invoices/';
+		$url = 'https://api.payhubix.com/v1/invoices/';
 		
 		// Prepare the data to be sent in JSON format
 		$data = [
@@ -230,6 +230,7 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 			'time_for_payment'   => $this->time_for_payment,
 			'currencies'        => [],
 			'order_id'          => $order->get_order_number(),
+			'shop_id'			=> $this->shop_id,
 			'order_description' => $order->get_title(),
 			'callback_url'      => $this->get_return_url($order). '&wc-api=payhubix_gateway',
 		];
@@ -244,7 +245,7 @@ class Payhubix_Gateway extends WC_Payment_Gateway
 			'timeout'     => 30,
 			'data_format' => 'body',
 		];
-	
+
 		// Make the HTTP POST request
 		$response = wp_remote_post($url, $args);
 	

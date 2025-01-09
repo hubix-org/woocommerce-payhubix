@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Payhubix Gateway For Woocommerce 1.1.2\n"
+"Project-Id-Version: Payhubix Gateway For Woocommerce 1.1.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/payhubix-gateway-wc\n"
 "Last-Translator: Payhubix TM <info@payhubix.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

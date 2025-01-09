@@ -4,7 +4,7 @@ Donate link: https://payhubix.com/
 Tags: woocommerce, payhubix, crypto, cryptopaymentgateway, gateway
 Requires at least: 6.5 or higher
 Tested up to: 6.7.1
-Stable tag: 1.1.1
+Stable tag: 1.1.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,6 +33,9 @@ The Payhubix Gateway for WooCommerce is a powerful payment integration plugin th
 
 
 == Change log ==
+
+= 1.1.3 =
+* Fix API endpoints
 
 = 1.1.2 =
 * Fix Price with Decimals
